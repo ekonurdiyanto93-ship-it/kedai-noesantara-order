@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Pemesanan - Kedai Noesantara</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+                        url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1920') center/cover fixed;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #8B4513;
+        }
+        
+        .header h1 {
+            color: #8B4513;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #8B4513;
+        }
+        
+        .menu-section {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .menu-section h3 {
+            color: #8B4513;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .menu-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 2px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .menu-item-info {
+            flex: 1;
+        }
+        
+        .menu-item-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+        }
+        
+        .menu-item-price {
+            color: #8B4513;
+            font-weight: bold;
+        }
+        
+        .menu-item-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .qty-input {
+            width: 60px;
+            text-align: center;
+            padding: 8px;
+        }
+        
+        .btn-add {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        
+        .btn-add:hover {
+            background: #218838;
+        }
+        
+        .btn-add:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .cart-section {
+            background: #fff8e1;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 2px solid #8B4513;
+        }
+        
+        .cart-section h3 {
+            color: #8B4513;
+            margin-bottom: 15px;
+        }
+        
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: white;
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+        
+        .cart-item-details {
+            flex: 1;
+        }
+        
+        .btn-remove {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .btn-remove:hover {
+            background: #c82333;
+        }
+        
+        .total-section {
+            background: #8B4513;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+        
+        .btn-submit {
+            width: 100%;
+            background: #8B4513;
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 20px;
+        }
+        
+        .btn-submit:hover {
+            background: #6d3410;
+        }
+        
+        .btn-submit:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .category-toggle {
+            background: #8B4513;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .category-toggle:hover {
+            background: #6d3410;
+        }
+        
+        .category-content {
+            display: none;
+            padding-top: 10px;
+        }
+        
+        .category-content.active {
+            display: block;
+        }
+        
+        .empty-cart {
+            text-align: center;
+            color: #999;
+            padding: 20px;
+        }
+        
+        .success-message {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .error-message {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🍽️ KEDAI NOESANTARA</h1>
+            <p>Kompleks KIMA Square, Jl. Perintis Kemerdekaan KM.16 Makassar</p>
+            <p>📞 08111782462 | @kedainoesantara</p>
+        </div>
+        
+        <div class="success-message" id="successMessage">
+            ✅ Pesanan berhasil dikirim! Terima kasih.
+        </div>
+        
+        <div class="error-message" id="errorMessage">
+            ❌ Terjadi kesalahan. Silakan coba lagi.
+        </div>
+        
+        <form id="orderForm">
+            <!-- Customer Info -->
+            <div class="form-group">
+                <label>Nama Pemesan *</label>
+                <input type="text" id="customerName" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Nomor Telepon *</label>
+                <input type="tel" id="phoneNumber" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Nomor Kamar *</label>
+                <input type="text" id="roomNumber" required>
+            </div>
+            
+            <!-- Menu Categories -->
+            <div class="menu-section">
+                <h3>📋 Pilih Menu</h3>
+                
+                <!-- Special Menu -->
+                <div class="category-toggle" onclick="toggleCategory('special')">
+                    <span>Special Menu</span>
+                    <span>▼</span>
+                </div>
+                <div class="category-content" id="special">
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Sop Buntut</div>
+                            <div class="menu-item-price">Rp 79.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-sop_buntut">
+                            <button type="button" class="btn-add" onclick="addToCart('Sop Buntut', 79000, 'qty-sop_buntut')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Buntut Bakar/Goreng</div>
+                            <div class="menu-item-price">Rp 79.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-buntut_bakar">
+                            <button type="button" class="btn-add" onclick="addToCart('Buntut Bakar/Goreng', 79000, 'qty-buntut_bakar')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Sop Kepala Ikan</div>
+                            <div class="menu-item-price">Rp 55.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-sop_ikan">
+                            <button type="button" class="btn-add" onclick="addToCart('Sop Kepala Ikan', 55000, 'qty-sop_ikan')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Soto Ayam</div>
+                            <div class="menu-item-price">Rp 39.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-soto_ayam">
+                            <button type="button" class="btn-add" onclick="addToCart('Soto Ayam', 39000, 'qty-soto_ayam')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Bebek Goreng/Penyet/Bakar</div>
+                            <div class="menu-item-price">Rp 49.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-bebek">
+                            <button type="button" class="btn-add" onclick="addToCart('Bebek Goreng/Penyet/Bakar', 49000, 'qty-bebek')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Ayam Goreng/Penyet/Bakar</div>
+                            <div class="menu-item-price">Rp 29.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-ayam">
+                            <button type="button" class="btn-add" onclick="addToCart('Ayam Goreng/Penyet/Bakar', 29000, 'qty-ayam')">+ Tambah</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Nasi -->
+                <div class="category-toggle" onclick="toggleCategory('nasi')">
+                    <span>Nasi</span>
+                    <span>▼</span>
+                </div>
+                <div class="category-content" id="nasi">
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Nasi Goreng Kampung</div>
+                            <div class="menu-item-price">Rp 39.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-nasgor_kampung">
+                            <button type="button" class="btn-add" onclick="addToCart('Nasi Goreng Kampung', 39000, 'qty-nasgor_kampung')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Nasi Goreng Seafood</div>
+                            <div class="menu-item-price">Rp 39.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-nasgor_seafood">
+                            <button type="button" class="btn-add" onclick="addToCart('Nasi Goreng Seafood', 39000, 'qty-nasgor_seafood')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Nasi Goreng Ikan Asin</div>
+                            <div class="menu-item-price">Rp 39.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-nasgor_ikan_asin">
+                            <button type="button" class="btn-add" onclick="addToCart('Nasi Goreng Ikan Asin', 39000, 'qty-nasgor_ikan_asin')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Nasi Goreng Merah</div>
+                            <div class="menu-item-price">Rp 39.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-nasgor_merah">
+                            <button type="button" class="btn-add" onclick="addToCart('Nasi Goreng Merah', 39000, 'qty-nasgor_merah')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Nasi Goreng Bebek Ijo</div>
+                            <div class="menu-item-price">Rp 49.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-nasgor_bebek">
+                            <button type="button" class="btn-add" onclick="addToCart('Nasi Goreng Bebek Ijo', 49000, 'qty-nasgor_bebek')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Nasi Putih</div>
+                            <div class="menu-item-price">Rp 9.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-nasi_putih">
+                            <button type="button" class="btn-add" onclick="addToCart('Nasi Putih', 9000, 'qty-nasi_putih')">+ Tambah</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Mie -->
+                <div class="category-toggle" onclick="toggleCategory('mie')">
+                    <span>Mie</span>
+                    <span>▼</span>
+                </div>
+                <div class="category-content" id="mie">
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Indomie Khas Noesantara</div>
+                            <div class="menu-item-price">Rp 19.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-indomie">
+                            <button type="button" class="btn-add" onclick="addToCart('Indomie Khas Noesantara', 19000, 'qty-indomie')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Mie Goreng Special</div>
+                            <div class="menu-item-price">Rp 39.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-mie_goreng">
+                            <button type="button" class="btn-add" onclick="addToCart('Mie Goreng Special', 39000, 'qty-mie_goreng')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Mie Kuah Special</div>
+                            <div class="menu-item-price">Rp 39.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-mie_kuah">
+                            <button type="button" class="btn-add" onclick="addToCart('Mie Kuah Special', 39000, 'qty-mie_kuah')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Mie Kering</div>
+                            <div class="menu-item-price">Rp 39.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-mie_kering">
+                            <button type="button" class="btn-add" onclick="addToCart('Mie Kering', 39000, 'qty-mie_kering')">+ Tambah</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Ikan -->
+                <div class="category-toggle" onclick="toggleCategory('ikan')">
+                    <span>Ikan</span>
+                    <span>▼</span>
+                </div>
+                <div class="category-content" id="ikan">
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Ikan Dori Goreng/Bakar</div>
+                            <div class="menu-item-price">Rp 39.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-ikan_dori">
+                            <button type="button" class="btn-add" onclick="addToCart('Ikan Dori Goreng/Bakar', 39000, 'qty-ikan_dori')">+ Tambah</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sayuran -->
+                <div class="category-toggle" onclick="toggleCategory('sayuran')">
+                    <span>Sayuran</span>
+                    <span>▼</span>
+                </div>
+                <div class="category-content" id="sayuran">
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Cah Kangkung</div>
+                            <div class="menu-item-price">Rp 19.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-kangkung">
+                            <button type="button" class="btn-add" onclick="addToCart('Cah Kangkung', 19000, 'qty-kangkung')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Cah Tauge</div>
+                            <div class="menu-item-price">Rp 19.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-tauge">
+                            <button type="button" class="btn-add" onclick="addToCart('Cah Tauge', 19000, 'qty-tauge')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Cah Sawi</div>
+                            <div class="menu-item-price">Rp 19.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-sawi">
+                            <button type="button" class="btn-add" onclick="addToCart('Cah Sawi', 19000, 'qty-sawi')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Sayur Asem</div>
+                            <div class="menu-item-price">Rp 19.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-sayur_asem">
+                            <button type="button" class="btn-add" onclick="addToCart('Sayur Asem', 19000, 'qty-sayur_asem')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Capcay</div>
+                            <div class="menu-item-price">Rp 19.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-capcay">
+                            <button type="button" class="btn-add" onclick="addToCart('Capcay', 19000, 'qty-capcay')">+ Tambah</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Cemilan -->
+                <div class="category-toggle" onclick="toggleCategory('cemilan')">
+                    <span>Cemilan</span>
+                    <span>▼</span>
+                </div>
+                <div class="category-content" id="cemilan">
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Kentang Goreng</div>
+                            <div class="menu-item-price">Rp 19.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-kentang">
+                            <button type="button" class="btn-add" onclick="addToCart('Kentang Goreng', 19000, 'qty-kentang')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Ubi Goreng</div>
+                            <div class="menu-item-price">Rp 19.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-ubi">
+                            <button type="button" class="btn-add" onclick="addToCart('Ubi Goreng', 19000, 'qty-ubi')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Pisang Goreng</div>
+                            <div class="menu-item-price">Rp 19.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-pisang">
+                            <button type="button" class="btn-add" onclick="addToCart('Pisang Goreng', 19000, 'qty-pisang')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Tempe/Tahu Goreng</div>
+                            <div class="menu-item-price">Rp 19.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-tempe_tahu">
+                            <button type="button" class="btn-add" onclick="addToCart('Tempe/Tahu Goreng', 19000, 'qty-tempe_tahu')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Roti Bakar</div>
+                            <div class="menu-item-price">Rp 19.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-roti">
+                            <button type="button" class="btn-add" onclick="addToCart('Roti Bakar', 19000, 'qty-roti')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Bakara Goreng</div>
+                            <div class="menu-item-price">Rp 19.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-bakara">
+                            <button type="button" class="btn-add" onclick="addToCart('Bakara Goreng', 19000, 'qty-bakara')">+ Tambah</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Paket Hemat -->
+                <div class="category-toggle" onclick="toggleCategory('paket')">
+                    <span>Paket Hemat</span>
+                    <span>▼</span>
+                </div>
+                <div class="category-content" id="paket">
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Paket Hemat</div>
+                            <div class="menu-item-price">Rp 13.000</div>
+                            <small style="color: #888;">Nasi + Es Teh</small>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-paket_hemat">
+                            <button type="button" class="btn-add" onclick="addToCart('Paket Hemat', 13000, 'qty-paket_hemat')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Paket Komplit</div>
+                            <div class="menu-item-price">Rp 21.000</div>
+                            <small style="color: #888;">Nasi + Tahu Tempe + Soup + Es Teh</small>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-paket_komplit">
+                            <button type="button" class="btn-add" onclick="addToCart('Paket Komplit', 21000, 'qty-paket_komplit')">+ Tambah</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Kopi -->
+                <div class="category-toggle" onclick="toggleCategory('kopi')">
+                    <span>Kopi</span>
+                    <span>▼</span>
+                </div>
+                <div class="category-content" id="kopi">
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Kopi Hitam (Hot/Iced)</div>
+                            <div class="menu-item-price">Rp 20.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-kopi_hitam">
+                            <button type="button" class="btn-add" onclick="addToCart('Kopi Hitam', 20000, 'qty-kopi_hitam')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Kopi Susu Tradisional Hot</div>
+                            <div class="menu-item-price">Rp 23.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-kopi_susu_hot">
+                            <button type="button" class="btn-add" onclick="addToCart('Kopi Susu Tradisional Hot', 23000, 'qty-kopi_susu_hot')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Kopi Susu Tradisional Iced</div>
+                            <div class="menu-item-price">Rp 25.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-kopi_susu_iced">
+                            <button type="button" class="btn-add" onclick="addToCart('Kopi Susu Tradisional Iced', 25000, 'qty-kopi_susu_iced')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Coffee Latte Hot</div>
+                            <div class="menu-item-price">Rp 25.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-latte_hot">
+                            <button type="button" class="btn-add" onclick="addToCart('Coffee Latte Hot', 25000, 'qty-latte_hot')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Coffee Latte Iced</div>
+                            <div class="menu-item-price">Rp 27.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-latte_iced">
+                            <button type="button" class="btn-add" onclick="addToCart('Coffee Latte Iced', 27000, 'qty-latte_iced')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Cappucino Hot</div>
+                            <div class="menu-item-price">Rp 25.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-cappucino_hot">
+                            <button type="button" class="btn-add" onclick="addToCart('Cappucino Hot', 25000, 'qty-cappucino_hot')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Cappucino Iced</div>
+                            <div class="menu-item-price">Rp 27.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-cappucino_iced">
+                            <button type="button" class="btn-add" onclick="addToCart('Cappucino Iced', 27000, 'qty-cappucino_iced')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Mocha Hot</div>
+                            <div class="menu-item-price">Rp 25.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-mocha_hot">
+                            <button type="button" class="btn-add" onclick="addToCart('Mocha Hot', 25000, 'qty-mocha_hot')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Mocha Iced</div>
+                            <div class="menu-item-price">Rp 27.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-mocha_iced">
+                            <button type="button" class="btn-add" onclick="addToCart('Mocha Iced', 27000, 'qty-mocha_iced')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Kopi Susu Gula Aren Hot</div>
+                            <div class="menu-item-price">Rp 25.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-gula_aren_hot">
+                            <button type="button" class="btn-add" onclick="addToCart('Kopi Susu Gula Aren Hot', 25000, 'qty-gula_aren_hot')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Kopi Susu Gula Aren Iced</div>
+                            <div class="menu-item-price">Rp 27.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-gula_aren_iced">
+                            <button type="button" class="btn-add" onclick="addToCart('Kopi Susu Gula Aren Iced', 27000, 'qty-gula_aren_iced')">+ Tambah</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Teh -->
+                <div class="category-toggle" onclick="toggleCategory('teh')">
+                    <span>Teh</span>
+                    <span>▼</span>
+                </div>
+                <div class="category-content" id="teh">
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Teh Tawar (Hot/Iced)</div>
+                            <div class="menu-item-price">Rp 10.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-teh_tawar">
+                            <button type="button" class="btn-add" onclick="addToCart('Teh Tawar', 10000, 'qty-teh_tawar')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Teh Manis (Hot/Iced)</div>
+                            <div class="menu-item-price">Rp 12.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-teh_manis">
+                            <button type="button" class="btn-add" onclick="addToCart('Teh Manis', 12000, 'qty-teh_manis')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Teh Tarik Hot</div>
+                            <div class="menu-item-price">Rp 20.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-teh_tarik_hot">
+                            <button type="button" class="btn-add" onclick="addToCart('Teh Tarik Hot', 20000, 'qty-teh_tarik_hot')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Teh Tarik Iced</div>
+                            <div class="menu-item-price">Rp 22.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-teh_tarik_iced">
+                            <button type="button" class="btn-add" onclick="addToCart('Teh Tarik Iced', 22000, 'qty-teh_tarik_iced')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Teh Susu Hot</div>
+                            <div class="menu-item-price">Rp 18.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-teh_susu_hot">
+                            <button type="button" class="btn-add" onclick="addToCart('Teh Susu Hot', 18000, 'qty-teh_susu_hot')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Teh Susu Iced</div>
+                            <div class="menu-item-price">Rp 20.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-teh_susu_iced">
+                            <button type="button" class="btn-add" onclick="addToCart('Teh Susu Iced', 20000, 'qty-teh_susu_iced')">+ Tambah</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Specialty Drinks -->
+                <div class="category-toggle" onclick="toggleCategory('specialty')">
+                    <span>Specialty Drinks</span>
+                    <span>▼</span>
+                </div>
+                <div class="category-content" id="specialty">
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Milo Hot</div>
+                            <div class="menu-item-price">Rp 18.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-milo_hot">
+                            <button type="button" class="btn-add" onclick="addToCart('Milo Hot', 18000, 'qty-milo_hot')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Milo Iced</div>
+                            <div class="menu-item-price">Rp 20.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-milo_iced">
+                            <button type="button" class="btn-add" onclick="addToCart('Milo Iced', 20000, 'qty-milo_iced')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Jeruk Nipis</div>
+                            <div class="menu-item-price">Rp 25.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-jeruk_nipis">
+                            <button type="button" class="btn-add" onclick="addToCart('Jeruk Nipis', 25000, 'qty-jeruk_nipis')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Lemon Tea Iced</div>
+                            <div class="menu-item-price">Rp 25.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-lemon_tea">
+                            <button type="button" class="btn-add" onclick="addToCart('Lemon Tea Iced', 25000, 'qty-lemon_tea')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Thai Tea Iced</div>
+                            <div class="menu-item-price">Rp 25.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-thai_tea">
+                            <button type="button" class="btn-add" onclick="addToCart('Thai Tea Iced', 25000, 'qty-thai_tea')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Milo Dinosaur</div>
+                            <div class="menu-item-price">Rp 25.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-milo_dinosaur">
+                            <button type="button" class="btn-add" onclick="addToCart('Milo Dinosaur', 25000, 'qty-milo_dinosaur')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Markisa Split</div>
+                            <div class="menu-item-price">Rp 25.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-markisa">
+                            <button type="button" class="btn-add" onclick="addToCart('Markisa Split', 25000, 'qty-markisa')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Soda Gembira</div>
+                            <div class="menu-item-price">Rp 18.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-soda_gembira">
+                            <button type="button" class="btn-add" onclick="addToCart('Soda Gembira', 18000, 'qty-soda_gembira')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Coca-Cola</div>
+                            <div class="menu-item-price">Rp 15.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-coca_cola">
+                            <button type="button" class="btn-add" onclick="addToCart('Coca-Cola', 15000, 'qty-coca_cola')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Fanta</div>
+                            <div class="menu-item-price">Rp 15.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-fanta">
+                            <button type="button" class="btn-add" onclick="addToCart('Fanta', 15000, 'qty-fanta')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Sprite</div>
+                            <div class="menu-item-price">Rp 15.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-sprite">
+                            <button type="button" class="btn-add" onclick="addToCart('Sprite', 15000, 'qty-sprite')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Mineral Water</div>
+                            <div class="menu-item-price">Rp 10.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-mineral_water">
+                            <button type="button" class="btn-add" onclick="addToCart('Mineral Water', 10000, 'qty-mineral_water')">+ Tambah</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Juice -->
+                <div class="category-toggle" onclick="toggleCategory('juice')">
+                    <span>Juice</span>
+                    <span>▼</span>
+                </div>
+                <div class="category-content" id="juice">
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Jus Alpukat</div>
+                            <div class="menu-item-price">Rp 27.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-jus_alpukat">
+                            <button type="button" class="btn-add" onclick="addToCart('Jus Alpukat', 27000, 'qty-jus_alpukat')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Jus Buah Naga</div>
+                            <div class="menu-item-price">Rp 27.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-jus_naga">
+                            <button type="button" class="btn-add" onclick="addToCart('Jus Buah Naga', 27000, 'qty-jus_naga')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Jus Sirsak</div>
+                            <div class="menu-item-price">Rp 27.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-jus_sirsak">
+                            <button type="button" class="btn-add" onclick="addToCart('Jus Sirsak', 27000, 'qty-jus_sirsak')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Jus Semangka</div>
+                            <div class="menu-item-price">Rp 27.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-jus_semangka">
+                            <button type="button" class="btn-add" onclick="addToCart('Jus Semangka', 27000, 'qty-jus_semangka')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Jus Jeruk</div>
+                            <div class="menu-item-price">Rp 27.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-jus_jeruk">
+                            <button type="button" class="btn-add" onclick="addToCart('Jus Jeruk', 27000, 'qty-jus_jeruk')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Jus Pepaya</div>
+                            <div class="menu-item-price">Rp 27.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-jus_pepaya">
+                            <button type="button" class="btn-add" onclick="addToCart('Jus Pepaya', 27000, 'qty-jus_pepaya')">+ Tambah</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <div class="menu-item-name">Jus Melon</div>
+                            <div class="menu-item-price">Rp 27.000</div>
+                        </div>
+                        <div class="menu-item-controls">
+                            <input type="number" class="qty-input" min="1" value="1" id="qty-jus_melon">
+                            <button type="button" class="btn-add" onclick="addToCart('Jus Melon', 27000, 'qty-jus_melon')">+ Tambah</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+            
+            <!-- Shopping Cart -->
+            <div class="cart-section">
+                <h3>🛒 Keranjang Pesanan</h3>
+                <div id="cartItems">
+                    <div class="empty-cart">Belum ada pesanan</div>
+                </div>
+                <div class="total-section">
+                    Total: Rp <span id="totalAmount">0</span>
+                </div>
+            </div>
+            
+            <!-- Additional Info -->
+            <div class="form-group">
+                <label>Varian Sambal (Opsional)</label>
+                <select id="sambalVariant">
+                    <option value="">Pilih Sambal</option>
+                    <option value="Sambal Cobek">Sambal Cobek</option>
+                    <option value="Sambal Ijo">Sambal Ijo</option>
+                    <option value="Sambal Rica">Sambal Rica</option>
+                    <option value="Sambal Tumis">Sambal Tumis</option>
+                    <option value="Sambal Dabu">Sambal Dabu</option>
+                    <option value="Tidak Pakai Sambal">Tidak Pakai Sambal</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Catatan Tambahan</label>
+                <textarea id="notes" rows="3" placeholder="Contoh: Pedas, Tanpa MSG, dll"></textarea>
+            </div>
+            
+            <button type="submit" class="btn-submit" id="submitBtn">
+                🚀 Kirim Pesanan
+            </button>
+        </form>
+    </div>
+    
+    <script>
+        let cart = [];
+        
+        function toggleCategory(id) {
+            const content = document.getElementById(id);
+            content.classList.toggle('active');
+        }
+        
+        function addToCart(name, price, qtyId) {
+            const qty = parseInt(document.getElementById(qtyId).value) || 1;
+            
+            // Check if item already exists
+            const existingIndex = cart.findIndex(item => item.name === name);
+            if (existingIndex > -1) {
+                cart[existingIndex].quantity += qty;
+            } else {
+                cart.push({ name, price, quantity: qty });
+            }
+            
+            updateCart();
+            document.getElementById(qtyId).value = 1;
+        }
+        
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+        
+        function updateCart() {
+            const cartItems = document.getElementById('cartItems');
+            const totalAmount = document.getElementById('totalAmount');
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<div class="empty-cart">Belum ada pesanan</div>';
+                totalAmount.textContent = '0';
+                return;
+            }
+            
+            let html = '';
+            let total = 0;
+            
+            cart.forEach((item, index) => {
+                const subtotal = item.price * item.quantity;
+                total += subtotal;
+                html += `
+                    <div class="cart-item">
+                        <div class="cart-item-details">
+                            <strong>${item.name}</strong><br>
+                            <small>Rp ${item.price.toLocaleString('id-ID')} × ${item.quantity} = Rp ${subtotal.toLocaleString('id-ID')}</small>
+                        </div>
+                        <button type="button" class="btn-remove" onclick="removeFromCart(${index})">Hapus</button>
+                    </div>
+                `;
+            });
+            
+            cartItems.innerHTML = html;
+            totalAmount.textContent = total.toLocaleString('id-ID');
+        }
+        
+        document.getElementById('orderForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (cart.length === 0) {
+                alert('Keranjang kosong! Silakan pilih menu terlebih dahulu.');
+                return;
+            }
+            
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = '⏳ Mengirim...';
+            
+            const orderData = {
+                customer_name: document.getElementById('customerName').value,
+                phone_number: document.getElementById('phoneNumber').value,
+                room_number: document.getElementById('roomNumber').value,
+                items: cart,
+                total_amount: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0),
+                sambal_variant: document.getElementById('sambalVariant').value,
+                notes: document.getElementById('notes').value,
+                order_date: new Date().toISOString()
+            };
+            
+            // GANTI URL INI DENGAN N8N WEBHOOK URL ANDA
+            const webhookUrl = 'YOUR_N8N_WEBHOOK_URL_HERE';
+            
+            try {
+                const response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(orderData)
+                });
+                
+                if (response.ok) {
+                    document.getElementById('successMessage').style.display = 'block';
+                    document.getElementById('orderForm').reset();
+                    cart = [];
+                    updateCart();
+                    
+                    setTimeout(() => {
+                        document.getElementById('successMessage').style.display = 'none';
+                    }, 5000);
+                } else {
+                    throw new Error('Network response was not ok');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('errorMessage').style.display = 'block';
+                
+                setTimeout(() => {
+                    document.getElementById('errorMessage').style.display = 'none';
+                }, 5000);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = '🚀 Kirim Pesanan';
+            }
+        });
+    </script>
+</body>
+</html>
