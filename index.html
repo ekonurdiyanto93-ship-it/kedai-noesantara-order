@@ -345,6 +345,7 @@
             ❌ Terjadi kesalahan. Silakan coba lagi.
         </div>
         
+		<div id="orderPage">
         <form id="orderForm">
             <!-- Customer Info -->
             <div class="form-group">
@@ -1116,7 +1117,6 @@
                     </div>
                 </div>
             </div>
-            </div>
             
             <!-- Shopping Cart -->
             <div class="cart-section">
@@ -1152,6 +1152,32 @@
                 Pesan Sekarang
             </button>
         </form>
+		</div>
+		<div id="orderDetailPage" style="display:none; max-width:600px; margin:30px auto; background:#fff; border-radius:12px; padding:30px; box-shadow:0 10px 25px rgba(0,0,0,0.1); font-family:sans-serif;">
+			<div style="text-align:center; margin-bottom:20px;">
+				<div style="font-size:60px; color:green;">✔</div>
+				<h2 style="color:#4a148c; margin:10px 0;">Pesanan Berhasil!</h2>
+				<p>Terima kasih atas pesanan Anda</p>
+			</div>
+			
+			<div style="border:1px solid #eee; border-radius:8px; padding:20px; margin-bottom:20px;">
+				<h3 style="margin-bottom:15px; color:#4a148c;">📋 Detail Pesanan</h3>
+				<p><strong>Nama:</strong> <span id="detailName"></span></p>
+				<p><strong>No. Telepon:</strong> <span id="detailPhone"></span></p>
+				<p><strong>No. Kamar:</strong> <span id="detailRoom"></span></p>
+				<p><strong>Tanggal & Waktu:</strong> <span id="detailDate"></span></p>
+				<hr style="margin:15px 0;">
+				<div id="detailItems"></div>
+			</div>
+
+			<div style="background:#4a148c; color:#fff; padding:15px; border-radius:8px; text-align:center; font-size:20px; font-weight:bold; margin-bottom:20px;">
+				Total Pembayaran: Rp <span id="detailTotal"></span>
+			</div>
+
+			<div style="text-align:center;">
+				<button onclick="window.location.reload()" style="padding:12px 20px; border:none; background:#4a148c; color:#fff; border-radius:8px; cursor:pointer; font-size:16px;">+ Pesan Baru</button>
+			</div>
+		</div>
     </div>
     
     <script>
@@ -1249,15 +1275,30 @@
                 });
                 
                 if (response.ok) {
-                    document.getElementById('successMessage').style.display = 'block';
-                    document.getElementById('orderForm').reset();
-                    cart = [];
-                    updateCart();
-                    
-                    setTimeout(() => {
-                        document.getElementById('successMessage').style.display = 'none';
-                    }, 5000);
-                } else {
+				// Sembunyikan seluruh halaman order (menu + form)
+				document.getElementById('orderPage').style.display = 'none';
+
+				// Isi detail pesanan
+				document.getElementById('detailName').textContent = orderData.customer_name;
+				document.getElementById('detailPhone').textContent = orderData.phone_number;
+				document.getElementById('detailRoom').textContent = orderData.room_number;
+				document.getElementById('detailDate').textContent = new Date(orderData.order_date).toLocaleString('id-ID', {
+					weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
+					hour: '2-digit', minute: '2-digit'
+				});
+				document.getElementById('detailTotal').textContent = orderData.total_amount.toLocaleString('id-ID');
+
+				let itemsHtml = '';
+				orderData.items.forEach(item => {
+					itemsHtml += `
+						<p>${item.quantity} × ${item.name} = Rp ${(item.price * item.quantity).toLocaleString('id-ID')}</p>
+					`;
+				});
+				document.getElementById('detailItems').innerHTML = itemsHtml;
+
+				// Tampilkan halaman konfirmasi
+				document.getElementById('orderDetailPage').style.display = 'block';
+			} else {
                     throw new Error('Network response was not ok');
                 }
             } catch (error) {
@@ -1269,7 +1310,7 @@
                 }, 5000);
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.textContent = 'Kirim Pesanan';
+                submitBtn.textContent = 'Pesan Sekarang';
             }
         });
     </script>
